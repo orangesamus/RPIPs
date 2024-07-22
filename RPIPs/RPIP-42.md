@@ -34,7 +34,7 @@ The innovation of a bond curve is motivated by the need to maintain enough stake
 This RPIP is part of a set of proposals motivated by a desire to rework Rocket Pool's tokenomics to ensure the protocol’s continued value, development, and longevity. For more details, see the supporting documentation [here](../tokenomics-explainers/001-why-rework).
 
 ## Specification
-This specification introduces the following pDAO-configurable settings:
+This specification introduces the following pDAO protocol parameters:
 
 | Name                           | Type    | Initial Value             |
 |--------------------------------|---------|---------------------------|
@@ -51,11 +51,11 @@ Array indexing in this section is zero-based.
   - There MAY be a convenience function to use a single ETH payment to pay off existing `debt` and create an additional validator
 - When a Node Operator creates a validator, with `i` validators in the megapool prior to adding: 
   - If `i < base_bond_array.length`: the required `user_deposit` is the amount of additional ETH to bring the user's total bond up to `base_bond_array[i]`.
-  - If `i ≥ base_bond_array.length`:, the required `user_deposit` is `reduced_bond` per validator.
+  - If `i ≥ base_bond_array.length`: the required `user_deposit` is the amount of additional ETH to bring the user's bond total up to `base_bond_array[base_bond_array.length-1] + ( 1 + i - base_bond_array.length) * reduced_bond`
 - When a Node Operator removes a validator, with `i` validators in the megapool prior to removing:
-  - If `i > base_bond_array.length`: the Node Operator share before `debt` is `reduced_bond`.
-  - If `i ≤ base_bond_array.length` and `i > 1`: the Node Operator share before `debt` is the amount of ETH that would bring the user's total bond down to `base_bond_array[i-2]`.
-  - If `i==1`: the Node Operator share before `debt` is the amount of ETH that would bring the user's total bond down to 0 ETH.
+  - If `i > base_bond_array.length`: the node operator share before `debt` is any excess of the user's current bond total above `base_bond_array[base_bond_array.length-1] + ( i - 1 - base_bond_array.length) * reduced_bond`.
+  - If `i ≤ base_bond_array.length` and `i > 1`: the node operator share before `debt` is any excess of the user's current bond total above `base_bond_array[i-2]`.
+  - If `i==1`: the node operator share before `debt` is the amount of ETH that would bring the user's total bond down to 0 ETH.
 - Bulk validator creation/removal functions MAY be provided. If they are, they SHALL behave the same as multiple individual transactions.
 - If an NO has more total bonded ETH in their megapool than would be necessary based on the current settings (eg, `reduced_bond` is reduced) and they have no `debt`, it SHALL be possible to reduce their bonded ETH and receive ETH `credit` for it
 - `credit` MUST be usable to create validators in a megapool
@@ -65,7 +65,7 @@ Array indexing in this section is zero-based.
 
 ## Specification taking effect with Saturn 2
 - Update `reduced_bond` to 1.5 ETH
-- `base_bond_array` SHALL be converted to a pDAO setting (and added to the table above)
+- `base_bond_array` SHALL be converted to a pDAO protocol parameter (and added to the table above)
 - `base_bond_array` SHALL NOT be allowed to be set to `[]`
 
 ## Penalizable offenses
