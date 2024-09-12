@@ -29,6 +29,14 @@ The following explainers are being maintained by the community to help make the 
 
 ## Contents
 
+### [RPIP-42: Bond curves](RPIP-42.md)
+
+The changes to bond curves allow Node Operators to provide smaller ETH bonds while maintaining the security of the Rocket Pool protocol. 
+* This gives Node Operators the option of dramatically increasing their capital efficiency.
+* This allows the Rocket Pool Protocol to support a greater amount of rETH. 
+
+For bonds to be lowered securely for the protocol, an initial set of bonds for a node must be larger than the minimum bond. 
+
 ### [RPIP-43: Megapools](RPIP-43.md)
 
 A Megapool is a single contract that can be used as an Ethereum withdrawal address for multiple validators.
@@ -38,13 +46,13 @@ A Megapool is a single contract that can be used as an Ethereum withdrawal addre
 
 Additionally, Megapools are required to facilitate the bond curve changes described in RPIP-42.
 
-### [RPIP-42: Bond curves](RPIP-42.md)
+### [RPIP-44: Forced exits](RPIP-44.md)
 
-The changes to bond curves allow Node Operators to provide smaller ETH bonds while maintaining the security of the Rocket Pool protocol. 
-* This gives Node Operators the option of dramatically increasing their capital efficiency.
-* This allows the Rocket Pool Protocol to support a greater amount of rETH. 
+This change, planned for Saturn 2, allows the Rocket Pool protocol to force-exit Node Operators under certain circumstances. It relies on the adoption of [EIP-7002](https://eips.ethereum.org/EIPS/eip-7002) by the Ethereum protocol. 
+* This allows Node Operators to exit their validators easily.
+* This allows the Rocket Pool protocol to exit malicious validators.
 
-For bonds to be lowered securely for the protocol, an initial set of bonds for a node must be larger than the minimum bond. 
+The ability to force-exit misbehaving validators is a requirement for [RPIP-44](RPIP-44.md).
 
 ### [RPIP-46: Universal Adjustable Revenue Split](RPIP-46.md)
 
@@ -57,23 +65,6 @@ This change allows the ETH revenue income from borrowed ETH (aka, rETH commissio
 Aspects of the split are managed by the pDAO, the security council, and automatically by a heuristic function. For full details of 'who can do what', please see the full RPIP. 
 
 This RPIP also includes the reduction of RPL issuance from 5% to 1.5%, as RPL rewards to Node Operators have been replaced by UARS.
-
-### RPL Value Capture
-
-Some form of value capture method will be included in the tokenomics rework package. Three options are being actively debated:
-* [RPL Burn](RPIP-45.md) - Use the surplus share to buy and burn RPL.
-* [RPL Buy & LP](RPIP-50.md) - Use the surplus share to buy RPL and deposit it in a liquidity pool. 
-* Direct the surplus share to vote-eligible Node Operators, proportional to their share of vote-eligible RPL.
-
-For Saturn 1, the share will be directed based on vote-eligible RPL staked in megapools. There will be a vote prior to Saturn 1 going live to determine the preferred strategy starting at Saturn 2.
-
-### [RPIP-44: Forced exits](RPIP-44.md)
-
-This change, planned for Saturn 2, allows the Rocket Pool protocol to force-exit Node Operators under certain circumstances. It relies on the adoption of [EIP-7002](https://eips.ethereum.org/EIPS/eip-7002) by the Ethereum protocol. 
-* This allows Node Operators to exit their validators easily.
-* This allows the Rocket Pool protocol to exit malicious validators.
-
-The ability to force-exit misbehaving validators is a requirement for [RPIP-44](RPIP-44.md).
 
 ### [RPIP-47: Forced delegate upgrades](RPIP-47.md)
 
@@ -91,41 +82,47 @@ Here we describe the mechanics of Node Operator deposits and validator creation,
 ### [RPIP-60: Protocol Upgrade Guardrails](RPIP-60.md)
 
 This RPIP introduces a delay after protocol upgrades have been confirmed but prior to them coming into effect, and allows the security council to veto the upgrade during that delay. The veto is justified if the upgrade meets one of the following criteria:
-* It was subject to vote manipulation
-* It is a malicious action
-* It causes clear damage to the Rocket Pool project
+* It was subject to vote manipulation.
+* It is a malicious action.
+* It causes clear damage to the Rocket Pool project.
+
+### RPL Value Capture
+
+Some form of value capture method will be included in the tokenomics rework package. Three options are being actively debated:
+* [RPL Burn](RPIP-45.md) - Use the surplus share to buy and burn RPL.
+* [RPL Buy & LP](RPIP-50.md) - Use the surplus share to buy RPL and deposit it in a liquidity pool. 
+* Direct the surplus share to vote-eligible Node Operators, proportional to their share of vote-eligible RP.
+
+For Saturn 1, the share will be directed based on vote-eligible RPL staked in megapools. There will be a vote prior to Saturn 1 going live to determine the preferred strategy starting at Saturn 2.
+
 
 ## Deployment Plan
 
 The tokenomics rework package will likely be split between two protocol upgrades: Saturn 1 and Saturn 2.
 
 ### Saturn 1
-
-* [RPIP-43: Megapools](RPIP-43.md)
-  * Including ETH-only validators.
-* [RPIP-42: Bond curves](RPIP-42.md)
-  * Framework
-  * 4ETH minimum bond
-* [RPIP-59: Deposit Mechanics](RPIP-59.md)
-  * Standard and express queues.
-* [RPIP-46: Universal Adjustable Revenue Split](RPIP-46.md)
-  * Splits between rETH, NOs, and vote-eligible staked RPL staked in megapools
-  * RPL issuance rewards no longer have a minimum stake required
-* RPL Value Capture - Increased share to voting Node Operators.
+* [RPIP-42: Bond curves](RPIP-42.md) - Partial Inclusion
+  * 4 ETH bond per validator
+* [RPIP-43: Megapools](RPIP-43.md) (includes ETH-only validators)
+* [RPIP-46: Universal Adjustable Revenue Split](RPIP-46.md) - Partial Inclusion
+  * UARS introduced with no_share, voter_share, and reth_commission
+  * RPL issuance rewards extended to all staked RPL (no minimum staking requirement)
 * [RPIP-47: Forced delegate upgrades](RPIP-47.md)
+* [RPIP-59: Deposit Mechanics](RPIP-59.md) (includes express queue)
 * [RPIP-60: Protocol Upgrade Guardrails](RPIP-60.md)
+* RPL Value Capture - Increased share to vote-eligible RPL staked in megapools
 
 ### Saturn 2
 
-* [RPIP-42: Bond curves](RPIP-42.md)
-  * 1.5ETH minimum bond. 
+* [RPIP-42: Bond curves](RPIP-42.md) - Remainder
+  * 1.5 ETH minimum bond
 * [RPIP-44: Forced exits](RPIP-44.md)
 * [RPIP-46: Universal Adjustable Revenue Split](RPIP-46.md)
   * Split may add a new share for all RPL, depending on outcome of Revenue Share vote
   * May add in a semi-automated system of controlling voter_share, depending on outcome of Revenue Share vote
   * RPL inflation reduced to 1.5%  (from 5%)
-  * No more RPL issuance rewards
-* RPL Value Capture based on vote outcome - [RPL Burn](RPIP-45.md) / [RPL Buy & LP](RPIP-50.md) / Increased share to vote-eligible RPL staked in megapools
+  * RPL issuance rewards to node operators end
+* RPL Value Capture based on vote outcome - Probably one of: [RPL Burn](RPIP-45.md) / [RPL Buy & LP](RPIP-50.md) / Increased share to vote-eligible RPL staked in megapools
 
 ## Current Status
 Last Updated: July 16th
@@ -143,7 +140,7 @@ These items are to be considered flexible until ratified explicitly, rather than
   * **Vote Eligible RPL Targets** - Decide and ratify vote-eligible RPL targets if voter_share is not chosen as the surplus share strategy. 
 * **Deposit Strategy** - Decide whether to take a 2TX or 3TX deposit strategy for validator creation and ratify choice.
 * **Penalty System** - Research, draft and ratify a penalty system. 
-* **When the security council should change NO commission** - the proposal delegates a limited ability for the security council to make UARS changes and directs them to do so based on a specific metric. When and how the council should act is still an open area of discussion.
+* **When the security council should change node operator commission** - the proposal delegates a limited ability for the security council to make UARS changes and directs them to do so based on a specific metric. When and how the council should act is still an open area of discussion.
 
 Any other significant issues the development team identifies that impact their ability to deliver this upgrade may also be added to this list. The development team should strive to minimize this, communicate clearly if it occurs and keep as close to the spirit of the existing contents when deviation is needed. 
 
