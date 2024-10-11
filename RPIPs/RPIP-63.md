@@ -2,9 +2,9 @@
 rpip: 63
 title: Houston Hotfix
 description: This proposal defines what is included in the Houston hotfix.
-author: langers (@langers)
-discussions-to: 
-status: Draft
+author: langers (@langers), knoshua (@knoshua)
+discussions-to: https://dao.rocketpool.net/t/rpip-63-houston-hotfix/3269
+status: Final
 type: Protocol
 category: Core
 created: 2024-09-09
@@ -47,7 +47,9 @@ There has also been discussion around a potential tokenomics rework prelude [RPI
 
 - The `RocketDAOProtocolSettingsAuction` `Lot Duration` guardrail SHALL use blocks instead of seconds 
 - When setting the `RocketDAOProtocolSettingsNode` `MinimumPerMinipoolStake` parameter to 0, `RocketNodeStaking` `getNodeETHMatchedLimit` SHALL NOT revert due to division by 0
-- Non-functional fixes to improve parameter names to and remove typos MAY be included
+- Add `RocketDAOProtocolSettingsAuction` `CreateLotEnabled` SHALL be added to the list of pDAO parameters that can be modified by the Security Council
+- Add `RocketDAOProtocolSettingsAuction` `BidOnLotEnabled` SHALL be added to the list of pDAO parameters that can be modified by the Security Council
+- Non-functional fixes to improve parameter names and remove typos MAY be included
 
 ### Protocol Quorum
 
