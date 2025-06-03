@@ -32,6 +32,7 @@ This RPIP is part of a set of proposals motivated by a desire to rework Rocket P
 
 ### Deposit Queue Specification
 This specification introduces the following pDAO protocol parameters:
+
 | Name                                   | Type | Initial Value |
 |----------------------------------------|------|---------------|
 | `express_queue_rate`                   |      | `2`           |
@@ -52,10 +53,10 @@ ETH from the deposit pool SHALL be matched with validator deposits from queues a
 
 ### Deposit Mechanics Specification
 This specification introduces the following pDAO protocol parameters:
-| Name                   | Type  | Initial Value |
-|------------------------|-------|---------------|
-| `scrub_period`         | Hours | `12`          |
-| `time_before_dissolve` | Weeks | `2`           |
+
+| Name                   | Type  | Initial Value | Guardrail |
+|------------------------|-------|---------------|-----------|
+| `time_before_dissolve` | Days  | `14`          | `≥2`      |
 
 A node operator MUST take 2 actions to start a validator: `deposit` and `stake`
 
@@ -77,8 +78,6 @@ A node operator MUST take 2 actions to start a validator: `deposit` and `stake`
 - The assignment SHALL remove the validator from the queue
 
 #### `stake` Transaction
-- `stake` SHALL revert unless at least `scrub_period` time has passed since ETH was assigned to the validator, to allow for validating the prestake
-- If the beacon chain stake is invalid, the validator SHALL be scrubbed
 - `stake` SHALL stake the remaining 31 ETH to the beacon chain to make a complete validator
 - If `stake` is not called within `time_before_dissolve` after the ETH was assigned, the validator SHALL be dissolved, returning the unstaked balance to the deposit pool
   - If a validator is dissolved the bonded value SHALL be recoverable. This MAY require further action from the node operator. This MAY temporarily require additional ETH from the node operator.
@@ -117,7 +116,7 @@ A node operator MUST take 2 actions to start a validator: `deposit` and `stake`
 - Disabling social assignments increases the likelihood of ETH accumulating in the deposit pool while validators are waiting in the queue. But the node operators in the queue that would be assigned ETH have a direct incentive to execute the assignments. In addition, we recommend that the pDAO funds (for example through the GMC) development and execution of assignment bots that assign ETH in the deposit pool to the queue at a reasonable gas price.
 - Assigning ETH from the deposit pool based on ETH deposit size could allow for gaming if the gas cost of multiple <32 ETH deposits is lower than a single deposit
   - To reduce gas of the single deposit, `prestake` could be decoupled from assignment. This would result in 3 necessary transactions to start a validator: `deposit`, `prestake` and `stake`. Analogous to assignments, `prestake`s could be subsidized by the pDAO.  
-  - Alternatively, assignments from ETH deposit could be deactived entirely. This would mean that all assignment and prestake transactions would have to be pDAO reimbursed and/or executed by the node operators.
+  - Alternatively, assignments from ETH deposit could be deactivated entirely. This would mean that all assignment and prestake transactions would have to be pDAO reimbursed and/or executed by the node operators.
 - Node operators are still able to perform arbitrage in case of a full deposit pool and a premium on rETH price, since the `deposit` transaction would assign to the validator immediately
 - The coupling of `deposit` and assignment also prevents indirect minting of rETH (by depositing, exiting the queue for credit and redeeming it for rETH) while the deposit pool is full
 - There is potential for moderate griefing by creating n validators and never calling `stake`. The griefer keeps n\*31 protocol ETH idle for 2 weeks at the cost of keeping n\*ETH_deposit of their own ETH idle and paying gas to `deposit` and reclaim funds from `dissolve`. The text notes that reclaiming funds MAY require further action from the node operator and MAY require additional temporary ETH. Friction could be added in either of those steps should this variety of griefing prove problematic. Alternatively, a small fee to reclaim funds would also be effective (though that would require a new specification etc.).

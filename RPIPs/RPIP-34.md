@@ -4,7 +4,7 @@ title: Voted Operational Process Framework
 description: A framework for voting groups in the Rocket Pool DAOs to make operational decisions.
 author: LongForWisdom (@LongForWisdom)
 discussions-to: https://dao.rocketpool.net/t/rpip-34-voted-operational-processes/2283
-status: Draft
+status: Stagnant
 type: Meta
 created: 2023-10-13
 ---
@@ -282,7 +282,7 @@ This is a voted operational process (VOP) definition, see [RPIP-34](RPIP-34.md) 
 ### Modified VOPs
 * An existing VOP definition MAY be modified using the regular RPIP proecss as part of an edit or replacement to an existing RPIP.
 * The VOP overview MUST be kept up to date with any modifications.
-* A brief note and hyperlinks to each previously ratified version of a VOP defintion MUST be included with the newly modified VOP definition. 
+* A brief note and hyperlinks to each previously ratified version of a VOP definition MUST be included with the newly modified VOP definition. 
 
 ### Obsolete VOPs
 * A VOP definition SHALL become obsolete if its containing RPIP is made obsolete and the VOP is not moved to a different RPIP.
